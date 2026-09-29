@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="nl">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Labo 1 - opdracht 4 (Alpine)</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3/dist/cdn.min.js"></script>
+</head>
+
+<body>
+  <h1>Mijn taken (Alpine)</h1>
+
+  <div x-data="{
+      taken: [
+        { id: 1, titel: 'Alpine-directives invullen', gedaan: false },
+        { id: 2, titel: 'Reflectie schrijven', gedaan: false },
+      ],
+      nieuw: '',
+      volgendId: 3,
+    }">
+    <!-- TODO 1: show 'Nog X open' with x-text (an expression over taken) -->
+    <p x-text="`Nog ${taken.filter(t =>!t.gedaan).length} open`"></p>
+
+    <!-- TODO 2: bind the input to 'nieuw' with x-model -->
+    <input x-model="nieuw">
+    <!-- TODO 3: on @click push { id: volgendId++, titel: nieuw, gedaan: false } and clear 'nieuw' -->
+    <button @click="taken.push({id: volgendId++, titel: nieuw, gedaan: false}); nieuw=''">Toevoegen</button>
+
+    <ul>
+      <!-- TODO 4: repeat with <template x-for="taak in taken" :key="taak.id"> -->
+      <template x-for="taak in taken" :key="taak.id">
+        <li>
+          <span x-text="taak.titel" :class="taak.gedaan && 'gedaan'"></span>
+          <!-- TODO 5: a button that toggles taak.gedaan on @click -->
+          <button @click="taak.gedaan = !taak.gedaan">Gedaan</button>
+          <!-- TODO 6: a button that removes this taak from the array on @click -->
+          <button @click="taken = taken.filter(t => t.id !== taak.id)">Verwijderen</button>
+        </li>
+      </template>
+      <!-- /x-for -->
+    </ul>
+
+    <!-- TODO 7: show this only when the list is empty (x-show) -->
+    <p x-show="taken.length === 0">Nog geen taken.</p>
+  </div>
+</body>
+
+</html>
